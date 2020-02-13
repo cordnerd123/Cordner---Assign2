@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace Cordner___Assign2
@@ -24,10 +25,10 @@ namespace Cordner___Assign2
             //int sum = MinimumSum(l2);
             //Console.WriteLine(sum);
             
-            //Console.WriteLine("Question 4");
-            //string s2 = "Dell";
-            //string sortedString = FreqSort(s2);
-            //Console.WriteLine(sortedString);
+            Console.WriteLine("Question 4");
+            string s2 = "Dell";
+            string sortedString = FreqSort(s2);
+            Console.WriteLine(sortedString);
 
             //Console.WriteLine("Question 5-Part 1");
             //int[] nums1 = { 1, 2, 2, 1 };
@@ -109,29 +110,28 @@ namespace Cordner___Assign2
         }
         public static string FreqSort(string s2)
         {
-            Dictionary<char, int> dict = new Dictionary<char, int>();
-
+            SortedDictionary<char, string> dict = new SortedDictionary<char, string>();
+            string outstring = String.Empty;
             try
             {
+                // put ea char into dictionary with value as frequency
                 foreach (char c in s2)
                 {
-                    if (!dict.ContainsKey(c))
-                    {
-                        dict.Add(c, 1);
-                    }
-                    else
-                    {
-                        dict[c] = dict[c] + 1;
-                    }
-
+                    if (!dict.ContainsKey(c)) dict.Add(c, c.ToString());
+                    else dict[c] = dict[c] + c.ToString();
                 }
                 
+                foreach (var item in dict.OrderByDescending(r => r.Value))
+                {
+                    outstring = outstring + item.Value;
+                }
+
             }
             catch (Exception)
             {
                 throw;
             }
-            return null;
+            return outstring;
         }
 
         public static int[] Intersect1(int[] nums1, int[] nums2)
