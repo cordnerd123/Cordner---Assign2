@@ -25,10 +25,10 @@ namespace Cordner___Assign2
             //int sum = MinimumSum(l2);
             //Console.WriteLine(sum);
             
-            Console.WriteLine("Question 4");
-            string s2 = "Dell";
-            string sortedString = FreqSort(s2);
-            Console.WriteLine(sortedString);
+            //Console.WriteLine("Question 4");
+            //string s2 = "daniel";
+            //string sortedString = FreqSort(s2);
+            //Console.WriteLine(sortedString);
 
             //Console.WriteLine("Question 5-Part 1");
             //int[] nums1 = { 1, 2, 2, 1 };
@@ -112,14 +112,22 @@ namespace Cordner___Assign2
         {
             SortedDictionary<char, string> dict = new SortedDictionary<char, string>();
             string outstring = String.Empty;
+            Boolean multi = false;
+
             try
             {
                 // put ea char into dictionary with value as frequency
                 foreach (char c in s2)
                 {
                     if (!dict.ContainsKey(c)) dict.Add(c, c.ToString());
-                    else dict[c] = dict[c] + c.ToString();
+                    else
+                    {
+                        dict[c] = dict[c] + c.ToString();
+                        multi = true;
+                    }  
                 }
+
+                if (multi == false) return outstring = "There ain't no double letters in your string";
                 
                 foreach (var item in dict.OrderByDescending(r => r.Value))
                 {
@@ -128,7 +136,8 @@ namespace Cordner___Assign2
 
             }
             catch (Exception)
-            {
+            {   //I feel like there should be somehting in here to handle specific exceptions
+                // however, I couldn't generate any errors
                 throw;
             }
             return outstring;
@@ -161,15 +170,35 @@ namespace Cordner___Assign2
 
         public static bool ContainsDuplicate(char[] arr, int k)
         {
+            SortedDictionary<char,int> dict = new SortedDictionary<char, int>();
+            Boolean foundit = false;
+
+            // is this O(n)? I think so...
             try
             {
-                //Write your code here;
+                for (int i = 0; i <= arr.Length; i++)
+                { 
+                    if(!dict.ContainsKey(arr[i]))
+                    {
+                        dict.Add(arr[i], 0);
+                    }
+                    else
+                    {
+                        dict[arr[i]] = i - dict[arr[i]];
+
+                        if (dict[arr[i]] <= k)
+                        {
+                            foundit = true;
+                            break;
+                        }
+                    }
+                }
             }
             catch (Exception)
             {
                 throw;
             }
-            return default;
+            return foundit;
         }
 
         public static int GoldRod(int rodLength)
