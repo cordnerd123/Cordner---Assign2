@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace Cordner___Assign2
 {
     class Program
@@ -60,8 +59,6 @@ namespace Cordner___Assign2
             
             //Console.WriteLine("Question 8");
             //SolvePuzzle();
-
-
         }
 
         public static void DisplayArray(int[] a)
@@ -173,7 +170,6 @@ namespace Cordner___Assign2
             SortedDictionary<char,int> dict = new SortedDictionary<char, int>();
             Boolean foundit = false;
 
-            // is this O(n)? I think so...
             try
             {
                 for (int i = 0; i <= arr.Length; i++)
