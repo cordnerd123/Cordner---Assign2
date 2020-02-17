@@ -52,10 +52,10 @@ namespace Cordner___Assign2
             //int priceProduct = GoldRod(rodLength);
             //Console.WriteLine(priceProduct);
             
-            //Console.WriteLine("Question 8");
-            //string[] userDict = new string[] { "rocky", "usf", "hello", "apple" };
-            //string keyword = "hhllo";
-            //Console.WriteLine(DictSearch(userDict, keyword));
+            Console.WriteLine("Question 8");
+            string[] userDict = new string[] { "rocky", "usf", "hello", "apple" };
+            string keyword = "hhllo";
+            Console.WriteLine(DictSearch(userDict, keyword));
             
             //Console.WriteLine("Question 8");
             //SolvePuzzle();
@@ -213,15 +213,34 @@ namespace Cordner___Assign2
         }
         public static bool DictSearch(string[] userDict, string keyword)
         {
+            int x = userDict.Length;
+            Boolean foundit = false;
+
             try
             {
-                //Write Your Code Here
+                for (int i = 0; i < x; i++)
+                {
+                    if (userDict[i].Length == keyword.Length)
+                    { 
+                        int distance =
+                            userDict[i].ToCharArray()
+                            .Zip(keyword.ToCharArray(), (c1, c2) => new { c1, c2 })
+                            .Count(m => m.c1 != m.c2);
+
+                        if (distance == 1)
+                        {
+                            foundit = true;
+                            break;
+                        }
+                    }
+                }
+                
             }
             catch (Exception)
             {
                 throw;
             }
-            return default;
+            return foundit;
         }
         public static void SolvePuzzle()
         {
