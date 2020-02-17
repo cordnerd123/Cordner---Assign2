@@ -47,10 +47,10 @@ namespace Cordner___Assign2
             //int k = 3;
             //Console.WriteLine(ContainsDuplicate(arr, k));
             
-            //Console.WriteLine("Question 7");
-            //int rodLength = 4;
-            //int priceProduct = GoldRod(rodLength);
-            //Console.WriteLine(priceProduct);
+            Console.WriteLine("Question 7");
+            int rodLength = 13;
+            int priceProduct = GoldRod(rodLength);
+            Console.WriteLine(priceProduct);
             
             //Console.WriteLine("Question 8");
             //string[] userDict = new string[] { "rocky", "usf", "hello", "apple" };
@@ -199,17 +199,28 @@ namespace Cordner___Assign2
 
         public static int GoldRod(int rodLength)
         {
+            int x=1;
+            int y=1;
             try
             {
-                //Write Your Code Here
-
+                if (rodLength == 3) x = rodLength;
+                else if (rodLength > 4)
+                {
+                    x = 3;
+                    y = GoldRod(rodLength-3);
+                }
+                else if (rodLength >= 2)
+                {
+                    x = 2;
+                    y = GoldRod(rodLength-2);
+                }
             }
 
             catch (Exception)
             {
                 throw;
             }
-            return 0;
+            return x*y;
         }
         public static bool DictSearch(string[] userDict, string keyword)
         {
