@@ -52,10 +52,10 @@ namespace Cordner___Assign2
             //int priceProduct = GoldRod(rodLength);
             //Console.WriteLine(priceProduct);
             
-            Console.WriteLine("Question 8");
-            string[] userDict = new string[] { "rocky", "usf", "hello", "apple" };
-            string keyword = "hhllo";
-            Console.WriteLine(DictSearch(userDict, keyword));
+            //Console.WriteLine("Question 8");
+            //string[] userDict = new string[] { "rocky", "usf", "hello", "apple" };
+            //string keyword = "hhllo";
+            //Console.WriteLine(DictSearch(userDict, keyword));
             
             //Console.WriteLine("Question 8");
             //SolvePuzzle();
