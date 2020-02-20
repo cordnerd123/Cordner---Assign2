@@ -25,7 +25,7 @@ namespace Cordner___Assign2
             //Console.WriteLine(sum);
 
             //Console.WriteLine("Question 4");
-            //string s2 = "daniel";
+            //string s2 = "xacabbzzcyzax";
             //string sortedString = FreqSort(s2);
             //Console.WriteLine(sortedString);
 
@@ -44,11 +44,11 @@ namespace Cordner___Assign2
 
             //Console.WriteLine("Question 6");
             //char[] arr = new char[] { 'a', 'g', 'h', 'a' };
-            //int k = 3;
+            //int k=3;
             //Console.WriteLine(ContainsDuplicate(arr, k));
 
             //Console.WriteLine("Question 7");
-            //int rodLength = 13;
+            //int rodLength = 25;
             //int priceProduct = GoldRod(rodLength);
             //Console.WriteLine(priceProduct);
 
@@ -58,7 +58,7 @@ namespace Cordner___Assign2
             //Console.WriteLine(DictSearch(userDict, keyword));
 
             //Console.WriteLine("Question 8");
-            SolvePuzzle();
+            //SolvePuzzle();
 
         }
 
@@ -107,7 +107,7 @@ namespace Cordner___Assign2
         }
         public static string FreqSort(string s2)
         {
-            SortedDictionary<char, string> dict = new SortedDictionary<char, string>();
+            SortedDictionary<char, int> dict = new SortedDictionary<char, int>();
             string outstring = String.Empty;
             Boolean multi = false;
 
@@ -116,27 +116,33 @@ namespace Cordner___Assign2
                 // put ea char into dictionary with value as frequency
                 foreach (char c in s2)
                 {
-                    if (!dict.ContainsKey(c)) dict.Add(c, c.ToString());
+                    if (!dict.ContainsKey(c)) dict.Add(c, 1);
                     else
                     {
-                        dict[c] = dict[c] + c.ToString();
+                        dict[c] = dict[c] + 1;
                         multi = true;
                     }
                 }
 
-                if (multi == false) return outstring = "There ain't no double letters in your string";
+                //if no multiple characters just force exception
+                if (multi == false) outstring = null;
 
+                //order dict by freq and populate string with most frequent first
                 foreach (var item in dict.OrderByDescending(r => r.Value))
                 {
-                    outstring = outstring + item.Value;
+                    for (int i = 1; i <= item.Value; i++)
+                        outstring = outstring + item.Key;
                 }
-
+            }
+            catch (NullReferenceException)
+            {
+                return outstring = "There ain't no double letters in your string";
             }
             catch (Exception)
-            {   //I feel like there should be somehting in here to handle specific exceptions
-                // however, I couldn't generate any errors
+            {
                 throw;
             }
+
             return outstring;
         }
         public static int[] Intersect1(int[] nums1, int[] nums2)
@@ -169,19 +175,18 @@ namespace Cordner___Assign2
             Boolean foundit = false;
 
             try
-            {
-                for (int i = 0; i <= arr.Length; i++)
+            {//key is char and value is distance to nearest reoccurance
+                for (int i = 0; i <= arr.Length-1; i++)
                 {
                     if (!dict.ContainsKey(arr[i]))
-                    {
                         dict.Add(arr[i], 0);
-                    }
+                    
                     else
-                    {
+                    {//change value to distance to previous occurance of key
                         dict[arr[i]] = i - dict[arr[i]];
 
                         if (dict[arr[i]] <= k)
-                        {
+                        {//if the distance is less than or equal to key value
                             foundit = true;
                             break;
                         }
@@ -198,10 +203,11 @@ namespace Cordner___Assign2
         {
             int x = 1;
             int y = 1;
+
             try
-            {
+            {// breaking rod in sections of 3 is most profitable - never have segment of 1 left over
                 if (rodLength == 3) x = rodLength;
-                else if (rodLength > 4)
+                else if (rodLength > 4)         
                 {
                     x = 3;
                     y = GoldRod(rodLength - 3);
@@ -225,11 +231,14 @@ namespace Cordner___Assign2
             Boolean foundit = false;
 
             try
-            {
+            {   // trigger exception if nothing is entered
+                if (keyword == String.Empty) keyword = null;
+
                 for (int i = 0; i < x; i++)
                 {
+                    // check if keyword and dict word are of same length
                     if (userDict[i].Length == keyword.Length)
-                    {
+                    {//compute if changing 1 char would make strings match
                         int distance =
                             userDict[i].ToCharArray()
                             .Zip(keyword.ToCharArray(), (c1, c2) => new { c1, c2 })
@@ -244,10 +253,17 @@ namespace Cordner___Assign2
                 }
 
             }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("You did not enter a value for the keyword...how tacky");
+                return foundit; 
+            }
             catch (Exception)
             {
                 throw;
             }
+
+            Console.Write("Input: " + keyword + "  Output: ");
             return foundit;
         }
         public static void SolvePuzzle()    
@@ -270,7 +286,7 @@ namespace Cordner___Assign2
             }
             catch (NullReferenceException)
             {
-                Console.WriteLine("Operation Aborted");
+                Console.WriteLine("Operation Aborted....Come back after one year!");
                 return;
             }
             catch
@@ -280,9 +296,8 @@ namespace Cordner___Assign2
             return;
         }
 
-
         public static string[] GetStrings()
-        {
+        {//get input strings from user and check for errors
             string[] iostr = new string[3];
 
             Console.WriteLine("Please enter two input strings, and an output string and hit ENTER after each");
@@ -309,17 +324,22 @@ namespace Cordner___Assign2
                     }
                 }
 
+                //check lengths of strings. Since adding, can't have an output string longer than
+                // one digit more than the input strings. Also, if input strings are of different lengths
+                // the output string can't be longer than longest input string.
                 if (iostr[2].Length - iostr[1].Length > 1 & iostr[2].Length - iostr[0].Length > 1)
                 {
                     Console.WriteLine("The output string can't be more than 1 char longer than the longest input string");
                     iostr = null;
                 }
                 else if (iostr[0].Length != iostr[1].Length)
+                {
                     if (iostr[2].Length > iostr[0].Length | iostr[2].Length > iostr[1].Length)
                     {
                         Console.WriteLine("The output string can't be longer than input when input strings are of different lengths");
                         iostr = null;
                     }
+                }
             }
             catch
             {
@@ -329,10 +349,8 @@ namespace Cordner___Assign2
             return iostr;
         }
         public static string UniqueCharacaters(string[] iostr)
-        {
+        {//return a string of unique characters from all three input strings
             string tstr = String.Empty;
-
-            //foreach (string value in iostr) tstr = tstr + value;
 
             tstr = iostr[0] + iostr[1] + iostr[2];
             tstr = String.Join("", tstr.Distinct());
@@ -340,26 +358,24 @@ namespace Cordner___Assign2
             return tstr;
         }
         public static SortedDictionary<char, int> SetupDict(string unichar, string outstr) 
-        {
+        {//setup dictionary of unique char as key and their values
             SortedDictionary<char, int> dict = new SortedDictionary<char, int>();
-            string uncom = String.Empty;
             Random rnd = new Random();
-            
+
             int x = rnd.Next(1, unichar.Length - 1);
 
-            //foreach (char value in unichar) dict.Add(value, rnd.Next(0,9));
+            // set all char to 0
             foreach (char value in unichar) dict.Add(value, 0);
 
-            // string of char that are not common across any of input strings (ie char not in output)
-            foreach (char c in unichar)
-                if (!outstr.Contains(c)) uncom = uncom + c;
-
-            dict[unichar[x]] = 1;    //random letter
+            //set one random letter to 1
+            dict[unichar[x]] = 1;    
 
             return dict;
         }
         public static int GetStringNum(string s, SortedDictionary <char, int> dict)
-        {
+        {//Converts numbers of individual char into string numbers to represent input strings
+         // and returns them as numbers.
+
             int num = 0;
             string numstr = String.Empty;
 
@@ -368,21 +384,17 @@ namespace Cordner___Assign2
             return num;
         }
         public static string StringNumResults(string s, SortedDictionary<char,int> dict)
-        {
+        {// returns numbers representing input strings as strings.
             string numstr = String.Empty;
 
             foreach(char c in s) numstr = numstr + dict[c];
             return numstr;
         }
-
         public static List<char> Uncommon(string instr1, string instr2, string outstr)
         {// get characters that only appear once across all strings
             string noncom = String.Empty;
             foreach (char c in instr1)
-            {
-                if (instr1.Distinct().Count() != instr1.Count()) ;
                 if (!instr2.Contains(c) & !outstr.Contains(c)) noncom = noncom + c;
-            }
             foreach (char c in outstr)
                 if (!instr1.Contains(c) & !instr2.Contains(c)) noncom = noncom + c;
             foreach (char c in instr2)
@@ -400,10 +412,10 @@ namespace Cordner___Assign2
             }
             return xyz;
         }
-
         public static string[] CalculateAnswer(string unichar, string[] iostr)
-        {
+        {//where all the magic happens....computes answer to 'puzzle'
             SortedDictionary<char, int> dict = new SortedDictionary<char, int>();
+            List<char> noncom = new List<char>();
 
             string instr1 = iostr[0];
             string instr2 = iostr[1];
@@ -411,40 +423,39 @@ namespace Cordner___Assign2
             string[] outnumstr = new string[3];
 
             Boolean longer = false;
-            List<char> noncom = new List<char>();
 
-            int i = 0;
-            int j = 0;
+            int i=0;
+            int j=0;
             int w = 0;
 
             //get dict of char as key and values set to random numbers
             dict = SetupDict(unichar, outstr);
 
+            //get number associated with each string as a number
             int innum1 = GetStringNum(instr1, dict);
             int innum2 = GetStringNum(instr2, dict);
             int outnum = GetStringNum(outstr, dict);
 
-            //determine if out str is longer than inputs - can't change first char of output if true
+            //if out str is longer than inputs -  first char of output can't be more than 1 if true
             if (outstr.Length > instr1.Length | outstr.Length > instr2.Length) longer = true;
 
             // get list of char not common across multiple strings
             noncom = Uncommon(instr1, instr2, outstr);
 
             try
-            {
+            {//w is just a counter to keep the loop from running too long
                 while (innum1 + innum2 != outnum & w < 1000000)
                 {
                     int sum = innum1 + innum2;
 
+                    // get position in strings of where difference is occuring
                     i = (outstr.Length-1) - Convert.ToInt32((Convert.ToString(outnum - sum).Length));
                     j = outstr.Length - Convert.ToInt32((Convert.ToString(sum).Length));
 
                     if (longer == true)
-                    {   // adjust if input sum is higher than output number
-
+                    {   // adjust input char if sum is lower than output number
                         if (outnum - sum > 0)
-                        {  // which input string to adjust?
-                            // increase the noncommon char first
+                        {  // increase the noncommon char first
                             if (noncom.Contains(instr1[i]))
                             {
                                 if (instr1[i] != outstr[0])
@@ -455,6 +466,7 @@ namespace Cordner___Assign2
                                 if (instr2[i] != outstr[0])
                                     if (dict[instr2[i]] < 9) dict[instr2[i]]++;
                             }
+
                             //if neither is noncommon update the first string if its within limits
                             else if (instr1[i] != outstr[0] & dict[instr1[i]] < 9)
                                 dict[instr1[i]]++;
@@ -462,7 +474,7 @@ namespace Cordner___Assign2
                                 dict[instr2[i]]++;
                         }
                         else
-                        { // adjust if output is higher than input sum
+                        { // adjust output char if output is lower than input sum
                             if (j == 0 & dict[outstr[j]] < 1) dict[outstr[j]]++;
                             else if (j != 0)
                             {
@@ -485,6 +497,7 @@ namespace Cordner___Assign2
                 throw;
             }
 
+            // set values for return
             outnumstr[0] = StringNumResults(instr1, dict);
             outnumstr[1] = StringNumResults(instr2, dict);
             outnumstr[2] = StringNumResults(outstr, dict);
