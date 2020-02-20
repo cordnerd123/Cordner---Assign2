@@ -343,7 +343,7 @@ namespace Cordner___Assign2
         {
             SortedDictionary<char, int> dict = new SortedDictionary<char, int>();
             string uncom = String.Empty;
-            Random rnd = new Random(123);
+            Random rnd = new Random();
             
             int x = rnd.Next(1, unichar.Length - 1);
 
@@ -353,10 +353,8 @@ namespace Cordner___Assign2
             // string of char that are not common across any of input strings (ie char not in output)
             foreach (char c in unichar)
                 if (!outstr.Contains(c)) uncom = uncom + c;
-            dict[uncom[0]] = 1;         // starting with b
-            //dict[unichar[x]] = 1;    //random letter
-            //dict[unichar[0]] = 1;
 
+            dict[unichar[x]] = 1;    //random letter
 
             return dict;
         }
@@ -376,6 +374,33 @@ namespace Cordner___Assign2
             foreach(char c in s) numstr = numstr + dict[c];
             return numstr;
         }
+
+        public static List<char> Uncommon(string instr1, string instr2, string outstr)
+        {// get characters that only appear once across all strings
+            string noncom = String.Empty;
+            foreach (char c in instr1)
+            {
+                if (instr1.Distinct().Count() != instr1.Count()) ;
+                if (!instr2.Contains(c) & !outstr.Contains(c)) noncom = noncom + c;
+            }
+            foreach (char c in outstr)
+                if (!instr1.Contains(c) & !instr2.Contains(c)) noncom = noncom + c;
+            foreach (char c in instr2)
+                if (!instr1.Contains(c) & !outstr.Contains(c)) noncom = noncom + c;
+
+            var xyz = noncom.ToList();
+
+            for (int g = 0; g < xyz.Count - 1; g++)
+            {
+                if (xyz[g] == xyz[g + 1])
+                {
+                    xyz.RemoveAt(g);
+                    xyz.RemoveAt(g);
+                }
+            }
+            return xyz;
+        }
+
         public static string[] CalculateAnswer(string unichar, string[] iostr)
         {
             SortedDictionary<char, int> dict = new SortedDictionary<char, int>();
@@ -386,6 +411,7 @@ namespace Cordner___Assign2
             string[] outnumstr = new string[3];
 
             Boolean longer = false;
+            List<char> noncom = new List<char>();
 
             int i = 0;
             int j = 0;
@@ -401,6 +427,9 @@ namespace Cordner___Assign2
             //determine if out str is longer than inputs - can't change first char of output if true
             if (outstr.Length > instr1.Length | outstr.Length > instr2.Length) longer = true;
 
+            // get list of char not common across multiple strings
+            noncom = Uncommon(instr1, instr2, outstr);
+
             try
             {
                 while (innum1 + innum2 != outnum & w < 1000000)
@@ -415,16 +444,22 @@ namespace Cordner___Assign2
 
                         if (outnum - sum > 0)
                         {  // which input string to adjust?
-
-                            // do we want to check for noncom first?
-                            if (instr1[i] != outstr[0])
+                            // increase the noncommon char first
+                            if (noncom.Contains(instr1[i]))
                             {
-                                if (dict[instr1[i]] < 9) dict[instr1[i]]++;
+                                if (instr1[i] != outstr[0])
+                                    if (dict[instr1[i]] < 9) dict[instr1[i]]++;
                             }
-                            else if (instr2[i] != outstr[0])
+                            else if (noncom.Contains(instr2[i]))
                             {
-                                if (dict[instr2[i]] < 9) dict[instr2[i]]++;
+                                if (instr2[i] != outstr[0])
+                                    if (dict[instr2[i]] < 9) dict[instr2[i]]++;
                             }
+                            //if neither is noncommon update the first string if its within limits
+                            else if (instr1[i] != outstr[0] & dict[instr1[i]] < 9)
+                                dict[instr1[i]]++;
+                            else if (instr2[i] != outstr[0] & dict[instr2[i]] < 9)
+                                dict[instr2[i]]++;
                         }
                         else
                         { // adjust if output is higher than input sum
