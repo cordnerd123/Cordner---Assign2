@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -60,7 +59,7 @@ namespace Cordner___Assign2
 
             //Console.WriteLine("Question 8");
             SolvePuzzle();
-            
+
         }
 
         public static void DisplayArray(int[] a)
@@ -82,7 +81,6 @@ namespace Cordner___Assign2
             }
             return new int[] { };
         }
-
         public static string StringReverse(string s)
         {
             try
@@ -141,7 +139,6 @@ namespace Cordner___Assign2
             }
             return outstring;
         }
-
         public static int[] Intersect1(int[] nums1, int[] nums2)
         {
             try
@@ -166,7 +163,6 @@ namespace Cordner___Assign2
             }
             return new int[] { };
         }
-
         public static bool ContainsDuplicate(char[] arr, int k)
         {
             SortedDictionary<char, int> dict = new SortedDictionary<char, int>();
@@ -198,7 +194,6 @@ namespace Cordner___Assign2
             }
             return foundit;
         }
-
         public static int GoldRod(int rodLength)
         {
             int x = 1;
@@ -255,11 +250,11 @@ namespace Cordner___Assign2
             }
             return foundit;
         }
-        public static void SolvePuzzle()
+        public static void SolvePuzzle()    
         {
             string[] iostr = new string[3];
             string unichar = String.Empty;
-            int len=0;
+            string[] outnumstr = new string[3];
 
             try
             {
@@ -267,19 +262,28 @@ namespace Cordner___Assign2
 
                 unichar = UniqueCharacaters(iostr);  //gets string of unique characters
 
-                testsomestuff(unichar, iostr);
+                outnumstr = CalculateAnswer(unichar, iostr);
+
+                Console.WriteLine(iostr[0] + ":" + outnumstr[0]);
+                Console.WriteLine(iostr[1] + ":" + outnumstr[1]);
+                Console.WriteLine(iostr[2] + ":" + outnumstr[2]);
             }
-            catch (Exception)
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("Operation Aborted");
+                return;
+            }
+            catch
             {
                 throw;
             }
             return;
         }
 
+
         public static string[] GetStrings()
         {
             string[] iostr = new string[3];
-            Boolean test = false;
 
             Console.WriteLine("Please enter two input strings, and an output string and hit ENTER after each");
             iostr[0] = Console.ReadLine();
@@ -296,12 +300,26 @@ namespace Cordner___Assign2
                     if (iostr[i].Any(c => char.IsDigit(c)) == true)
                     {
                         Console.WriteLine("You entered a number instead of a string. FIX IT!");
+                        iostr = null;
                     }
                     else if (iostr[i] == String.Empty)
                     {
                         Console.WriteLine("You entered a blank string....that's just dumb.");
+                        iostr = null;
                     }
                 }
+
+                if (iostr[2].Length - iostr[1].Length > 1 & iostr[2].Length - iostr[0].Length > 1)
+                {
+                    Console.WriteLine("The output string can't be more than 1 char longer than the longest input string");
+                    iostr = null;
+                }
+                else if (iostr[0].Length != iostr[1].Length)
+                    if (iostr[2].Length > iostr[0].Length | iostr[2].Length > iostr[1].Length)
+                    {
+                        Console.WriteLine("The output string can't be longer than input when input strings are of different lengths");
+                        iostr = null;
+                    }
             }
             catch
             {
@@ -310,11 +328,9 @@ namespace Cordner___Assign2
 
             return iostr;
         }
-
         public static string UniqueCharacaters(string[] iostr)
         {
             string tstr = String.Empty;
-            string test = String.Empty;
 
             //foreach (string value in iostr) tstr = tstr + value;
 
@@ -323,68 +339,122 @@ namespace Cordner___Assign2
 
             return tstr;
         }
-
-        public static SortedDictionary<char,int> SetupDict (string unichar)
+        public static SortedDictionary<char, int> SetupDict(string unichar, string outstr) 
         {
             SortedDictionary<char, int> dict = new SortedDictionary<char, int>();
+            string uncom = String.Empty;
+            Random rnd = new Random(123);
+            
+            int x = rnd.Next(1, unichar.Length - 1);
 
+            //foreach (char value in unichar) dict.Add(value, rnd.Next(0,9));
             foreach (char value in unichar) dict.Add(value, 0);
+
+            // string of char that are not common across any of input strings (ie char not in output)
+            foreach (char c in unichar)
+                if (!outstr.Contains(c)) uncom = uncom + c;
+            dict[uncom[0]] = 1;         // starting with b
+            //dict[unichar[x]] = 1;    //random letter
+            //dict[unichar[0]] = 1;
+
 
             return dict;
         }
-
-        public static void testsomestuff(string unichar, string[] iostr)
+        public static int GetStringNum(string s, SortedDictionary <char, int> dict)
         {
+            int num = 0;
+            string numstr = String.Empty;
 
+            foreach (char c in s) numstr = numstr + dict[c];
+            num = Convert.ToInt32(numstr);
+            return num;
+        }
+        public static string StringNumResults(string s, SortedDictionary<char,int> dict)
+        {
+            string numstr = String.Empty;
+
+            foreach(char c in s) numstr = numstr + dict[c];
+            return numstr;
+        }
+        public static string[] CalculateAnswer(string unichar, string[] iostr)
+        {
             SortedDictionary<char, int> dict = new SortedDictionary<char, int>();
+
             string instr1 = iostr[0];
             string instr2 = iostr[1];
             string outstr = iostr[2];
+            string[] outnumstr = new string[3];
 
-            string innumstr1 = String.Empty;
-            string innumstr2 = String.Empty;
-            string outnumstr = String.Empty;
-            string itstr = String.Empty;
+            Boolean longer = false;
 
-            int innum1;
-            int innum2;
-            int outnum;
+            int i = 0;
+            int j = 0;
+            int w = 0;
 
-            //get dict of char as key and values set to 0
-            dict = SetupDict(unichar);
+            //get dict of char as key and values set to random numbers
+            dict = SetupDict(unichar, outstr);
 
-            /////////////////////////////////////////////////////
-            //loop should start here
-            ///////////////////////////////////////////////////////
+            int innum1 = GetStringNum(instr1, dict);
+            int innum2 = GetStringNum(instr2, dict);
+            int outnum = GetStringNum(outstr, dict);
 
-            // make assignments in some kind of loop - below is a test case
-            dict[Convert.ToChar("u")] = 1;
-            dict[Convert.ToChar("b")] = 4;
-            dict[Convert.ToChar("e")] = 8;
-            dict[Convert.ToChar("r")] = 6;
-            dict[Convert.ToChar("c")] = 9;
-            dict[Convert.ToChar("o")] = 4;
-            dict[Convert.ToChar("l")] = 2;
-            dict[Convert.ToChar("n")] = 0;
+            //determine if out str is longer than inputs - can't change first char of output if true
+            if (outstr.Length > instr1.Length | outstr.Length > instr2.Length) longer = true;
 
-            // get string of characters to iterate through (ie char not in output string)
-            foreach (char c in instr1 + instr2) if (!iostr[2].Contains(c)) itstr = itstr + c;
+            try
+            {
+                while (innum1 + innum2 != outnum & w < 1000000)
+                {
+                    int sum = innum1 + innum2;
 
-            // convert values for first string into a number
-            foreach (char c in instr1) innumstr1 = innumstr1 + dict[c];
-            innum1 = Convert.ToInt32(innumstr1);
+                    i = (outstr.Length-1) - Convert.ToInt32((Convert.ToString(outnum - sum).Length));
+                    j = outstr.Length - Convert.ToInt32((Convert.ToString(sum).Length));
 
-            // convert values for 2nd string into a number
-            foreach(char c in instr2) innumstr2 = innumstr2 + dict[c];
-            innum2 = Convert.ToInt32(innumstr2);
+                    if (longer == true)
+                    {   // adjust if input sum is higher than output number
 
-            // convert values for output str into a number
-            foreach (char c in outstr) outnumstr = outnumstr + dict[c];
-            outnum = Convert.ToInt32(outnumstr);
+                        if (outnum - sum > 0)
+                        {  // which input string to adjust?
 
-            Console.WriteLine(innum1 + innum2);
-            Console.WriteLine(outnum);
+                            // do we want to check for noncom first?
+                            if (instr1[i] != outstr[0])
+                            {
+                                if (dict[instr1[i]] < 9) dict[instr1[i]]++;
+                            }
+                            else if (instr2[i] != outstr[0])
+                            {
+                                if (dict[instr2[i]] < 9) dict[instr2[i]]++;
+                            }
+                        }
+                        else
+                        { // adjust if output is higher than input sum
+                            if (j == 0 & dict[outstr[j]] < 1) dict[outstr[j]]++;
+                            else if (j != 0)
+                            {
+                                if (dict[outstr[j]] < 9) dict[outstr[j]]++;
+                            }
+                        }
+                    }
+   
+                    // get new numbers after adjustments
+                    innum1 = GetStringNum(instr1, dict);
+                    innum2 = GetStringNum(instr2, dict);
+                    outnum = GetStringNum(outstr, dict);
+
+                    w++;
+                } 
+            }
+            catch
+            {
+                // no man's land
+                throw;
+            }
+
+            outnumstr[0] = StringNumResults(instr1, dict);
+            outnumstr[1] = StringNumResults(instr2, dict);
+            outnumstr[2] = StringNumResults(outstr, dict);
+
+            return outnumstr;
         }
- 
     }
 }
