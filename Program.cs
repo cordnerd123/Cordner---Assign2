@@ -8,60 +8,59 @@ namespace Cordner___Assign2
     {
         static void Main(string[] args)
         {
-            // Console.WriteLine("Question 1");
-            //int[] l1 = new int[] { 5, 6, 6, 9, 9, 12 };
-            //int target = 9;
-            //int[] r = TargetRange(l1, target);
-            // Write your code to print range r here
+            Console.WriteLine("Question 1");
+            int[] l1 = new int[] { 5, 6, 6, 9, 9, 12 };
+            int target = 10;
+            int[] r = TargetRange(l1, target);
+            Console.WriteLine("[" + String.Join(",", r.Select(p => p.ToString())) + "]");
 
-            // Console.WriteLine("Question 2");
-            //string s = "University of South Florida";
-            //string rs = StringReverse(s);
-            //Console.WriteLine(rs);
+            Console.WriteLine("Question 2");
+            string s = "University of South Florida";
+            string rs = StringReverse(s);
+            Console.WriteLine(rs);
 
-            //Console.WriteLine("Question 3");
-            //int[] l2 = new int[] { 2, 2, 3, 5, 6 };
-            //int sum = MinimumSum(l2);
-            //Console.WriteLine(sum);
+            Console.WriteLine("Question 3");
+            int[] l2 = new int[] { 2, 2, 3, 5, 6 };
+            int sum = MinimumSum(l2);
+            Console.WriteLine(sum);
 
-            //Console.WriteLine("Question 4");
-            //string s2 = "xacabbzzcyzax";
-            //string sortedString = FreqSort(s2);
-            //Console.WriteLine(sortedString);
+            Console.WriteLine("Question 4");
+            string s2 = "yYkk";
+            string sortedString = FreqSort(s2);
+            Console.WriteLine(sortedString);
 
-            //Console.WriteLine("Question 5-Part 1");
-            //int[] nums1 = { 1, 2, 2, 1 };
-            //int[] nums2 = { 2, 2 };
-            //int[] intersect1 = Intersect1(nums1, nums2);
-            //Console.WriteLine("Part 1- Intersection of two arrays is: ");
-            //DisplayArray(intersect1);
-            //Console.WriteLine("[{0}]", string.Join(", ", intersect1));
-            //Console.WriteLine("\n");
-            //Console.WriteLine("Question 5-Part 2");
-            //int[] intersect2 = Intersect2(nums1, nums2);
-            //Console.WriteLine("Part 2- Intersection of two arrays is: ");
-            //DisplayArray(intersect2);
-            //Console.Write("[" + String.Join(",", intersect2.Select(p => p.ToString())) + "]");
-            //Console.WriteLine("\n");
+            Console.WriteLine("Question 5-Part 1");
+            int[] nums1 = { 1, 2, 2, 1 };
+            int[] nums2 = { 2, 2 };
+            int[] intersect1 = Intersect1(nums1, nums2);
+            Console.WriteLine("Part 1- Intersection of two arrays is: ");
+            DisplayArray(intersect1);
+            Console.WriteLine("[{0}]", string.Join(", ", intersect1));
+            Console.WriteLine("\n");
+            Console.WriteLine("Question 5-Part 2");
+            int[] intersect2 = Intersect2(nums1, nums2);
+            Console.WriteLine("Part 2- Intersection of two arrays is: ");
+            DisplayArray(intersect2);
+            Console.Write("[" + String.Join(",", intersect2.Select(p => p.ToString())) + "]");
+            Console.WriteLine("\n");
 
-            //Console.WriteLine("Question 6");
-            //char[] arr = new char[] { 'a', 'g', 'h', 'a' };
-            //int k=3;
-            //Console.WriteLine(ContainsDuplicate(arr, k));
+            Console.WriteLine("Question 6");
+            char[] arr = new char[] { 'a', 'g', 'h', 'a' };
+            int k = 3;
+            Console.WriteLine(ContainsDuplicate(arr, k));
 
-            //Console.WriteLine("Question 7");
-            //int rodLength = 25;
-            //int priceProduct = GoldRod(rodLength);
-            //Console.WriteLine(priceProduct);
+            Console.WriteLine("Question 7");
+            int rodLength = 4;
+            int priceProduct = GoldRod(rodLength);
+            Console.WriteLine(priceProduct);
 
-            //Console.WriteLine("Question 8");
-            //string[] userDict = new string[] { "rocky", "usf", "hello", "apple" };
-            //string keyword = "hhllo";
-            //Console.WriteLine(DictSearch(userDict, keyword));
+            Console.WriteLine("Question 8");
+            string[] userDict = new string[] { "rocky", "usf", "hello", "apple" };
+            string keyword = "hhllo";
+            Console.WriteLine(DictSearch(userDict, keyword));
 
-            //Console.WriteLine("Question 8");
-            //SolvePuzzle();
-
+            Console.WriteLine("Question 9");
+            SolvePuzzle();
         }
 
         public static void DisplayArray(int[] a)
@@ -71,7 +70,7 @@ namespace Cordner___Assign2
                 Console.Write(n + " ");
             }
         }
-         static int[] TargetRange(int[] l1, int target)
+        static int[] TargetRange(int[] l1, int target)
         {
             int[] arr = new int[2] { -1, -1 };
 
@@ -92,7 +91,6 @@ namespace Cordner___Assign2
             }
             return arr;
         }
-
         public static string StringReverse(string s)
         {
             string rs = "";
@@ -118,11 +116,8 @@ namespace Cordner___Assign2
             rs += tmp;
             return rs;
         }
-
         public static int MinimumSum(int[] l2)
         {
-
-
 
             int sum = 0;
             for (int i = 0; i < l2.Length; i++) //Here we wanted to create a loop that will growth till i was less than l2
@@ -180,7 +175,6 @@ namespace Cordner___Assign2
             return outstring;
         }
         public static int[] Intersect1(int[] nums1, int[] nums2)
-
         {
             int[] inter = new int[] { };
             try
@@ -237,8 +231,6 @@ namespace Cordner___Assign2
             return inter;
 
         }
-
-
         public static int[] Intersect2(int[] nums1, int[] nums2)
 
         {
@@ -260,10 +252,6 @@ namespace Cordner___Assign2
 
             return retrn;
         }
-        
-        
-        
-        
         public static bool ContainsDuplicate(char[] arr, int k)
         {
             SortedDictionary<char, int> dict = new SortedDictionary<char, int>();
@@ -390,7 +378,6 @@ namespace Cordner___Assign2
             }
             return;
         }
-
         public static string[] GetStrings()
         {//get input strings from user and check for errors
             string[] iostr = new string[3];
