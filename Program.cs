@@ -35,11 +35,13 @@ namespace Cordner___Assign2
             //int[] intersect1 = Intersect1(nums1, nums2);
             //Console.WriteLine("Part 1- Intersection of two arrays is: ");
             //DisplayArray(intersect1);
+            //Console.WriteLine("[{0}]", string.Join(", ", intersect1));
             //Console.WriteLine("\n");
             //Console.WriteLine("Question 5-Part 2");
             //int[] intersect2 = Intersect2(nums1, nums2);
             //Console.WriteLine("Part 2- Intersection of two arrays is: ");
             //DisplayArray(intersect2);
+            //Console.Write("[" + String.Join(",", intersect2.Select(p => p.ToString())) + "]");
             //Console.WriteLine("\n");
 
             //Console.WriteLine("Question 6");
@@ -69,41 +71,73 @@ namespace Cordner___Assign2
                 Console.Write(n + " ");
             }
         }
-        public static int[] TargetRange(int[] l1, int t)
+         static int[] TargetRange(int[] l1, int target)
         {
-            try
+            int[] arr = new int[2] { -1, -1 };
+
+            for (int i = 0; i < l1.Length; i++)
             {
-                //Write your code here;
+                if (l1[i] == target)
+                {
+                    if (arr[0] == -1)
+                    {
+                        arr[0] = i;
+                        arr[1] = i;
+                    }
+                    else
+                    {
+                        arr[1] = i;
+                    }
+                }
             }
-            catch (Exception)
-            {
-                throw;
-            }
-            return new int[] { };
+            return arr;
         }
+
         public static string StringReverse(string s)
         {
-            try
+            string rs = "";
+            string tmp = "";
+            string ltr = "";                // we add this variable to save the value of s
+
+
+            for (int i = 0; i < s.Length; i++)
             {
-                //write your code here
+                ltr = s[i].ToString();
+                // Here the letters of the string s are saved and transformed into a string, with that we can add the other letters inside the rs
+
+                if (ltr == " ")
+                {
+                    rs += tmp + " ";
+                    tmp = "";
+                }
+                else
+                {
+                    tmp = ltr + tmp;
+                }
             }
-            catch (Exception)
-            {
-                throw;
-            }
-            return null;
+            rs += tmp;
+            return rs;
         }
+
         public static int MinimumSum(int[] l2)
         {
-            try
+
+
+
+            int sum = 0;
+            for (int i = 0; i < l2.Length; i++) //Here we wanted to create a loop that will growth till i was less than l2
             {
-                //Write your code here;
+                if (i + 1 < l2.Length) //the if condition here will help us to determine if we increase the value of our parameter or not
+                {
+                    if (l2[i] == l2[i + 1])
+                    {
+                        l2[i + 1]++;// Here we are saying that if the parameters inside the array are equal then we add 1 to the following one
+                    }
+                }
+                sum += l2[i];// Finally, here we just add all the elements from the array
+
             }
-            catch (Exception)
-            {
-                throw;
-            }
-            return 0;
+            return sum;
         }
         public static string FreqSort(string s2)
         {
@@ -146,29 +180,90 @@ namespace Cordner___Assign2
             return outstring;
         }
         public static int[] Intersect1(int[] nums1, int[] nums2)
+
         {
+            int[] inter = new int[] { };
             try
             {
-                // Write your code here
+                Array.Sort(nums1);
+                Array.Sort(nums2);
+
+                int long1 = nums1.Length;
+                int long2 = nums2.Length;
+
+                String intersectionset = "";
+
+                int v = 0;
+                int m = 0;
+
+                if (nums2 is null || nums2 is null)
+                {
+                    inter = new int[] { };
+                }
+                else
+                {
+                    while (v < long1 && m < long2)
+                    {
+                        if (nums1[v] == nums2[m])
+                        {
+                            intersectionset += nums1[v];
+                            v++;
+                            m++;
+                        }
+                        else if (nums1[v] < nums2[m])
+                        {
+                            v++;
+                        }
+                        else
+                        {
+                            m++;
+                        }
+
+                    }
+
+                }
+
+                inter = new int[intersectionset.Length];
+                for (int a = 0; a < intersectionset.Length; a++)
+                {
+                    inter[a] = int.Parse(intersectionset[a].ToString());
+                }
+
             }
             catch
             {
                 throw;
             }
-            return new int[] { };
+            return inter;
+
         }
+
+
         public static int[] Intersect2(int[] nums1, int[] nums2)
+
         {
-            try
-            {
-                // Write your code here
-            }
-            catch
-            {
-                throw;
-            }
-            return new int[] { };
+            var primarydict = nums1.Select((index, value) => new { value, index })
+                      .ToDictionary(pair => pair.value, pair => pair.index);
+
+            var secondarydict = nums2.Select((index, value) => new { value, index })
+                      .ToDictionary(pair => pair.value, pair => pair.index);
+
+            //outputs index of intersection in terms of nums1
+            var resultDict = primarydict.Keys.Intersect(secondarydict.Keys)
+                                          .ToDictionary(t => t, t => primarydict[t]);
+
+            int x = resultDict.Count;
+            int[] retrn = new int[x];
+
+            for (int i = 0; i < x; i++)
+                retrn[i] = resultDict[i];
+
+            return retrn;
         }
+        
+        
+        
+        
         public static bool ContainsDuplicate(char[] arr, int k)
         {
             SortedDictionary<char, int> dict = new SortedDictionary<char, int>();
