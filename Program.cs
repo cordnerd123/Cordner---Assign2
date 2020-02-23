@@ -35,13 +35,11 @@ namespace Cordner___Assign2
             int[] intersect1 = Intersect1(nums1, nums2);
             Console.WriteLine("Part 1- Intersection of two arrays is: ");
             DisplayArray(intersect1);
-            Console.WriteLine("[{0}]", string.Join(", ", intersect1));
             Console.WriteLine("\n");
             Console.WriteLine("Question 5-Part 2");
             int[] intersect2 = Intersect2(nums1, nums2);
             Console.WriteLine("Part 2- Intersection of two arrays is: ");
             DisplayArray(intersect2);
-            Console.Write("[" + String.Join(",", intersect2.Select(p => p.ToString())) + "]");
             Console.WriteLine("\n");
 
             Console.WriteLine("Question 6");
@@ -65,10 +63,8 @@ namespace Cordner___Assign2
 
         public static void DisplayArray(int[] a)
         {
-            foreach (int n in a)
-            {
-                Console.Write(n + " ");
-            }
+            string vivs = "[" + string.Join(",", a) + "]";
+            Console.WriteLine(vivs);
         }
         static int[] TargetRange(int[] l1, int target)
         {
